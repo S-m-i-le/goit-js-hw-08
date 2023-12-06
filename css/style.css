@@ -15,7 +15,7 @@ ul {
 img {
   display: block;
   max-width: 100%;
-  cursor: url('./bxs_hand-down.png'), pointer;
+  cursor: url('../bxs_hand-down.png'), pointer;
 }
 .gallery-item {
   width: calc((100% - 48px) / 3);
