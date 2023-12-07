@@ -87,15 +87,18 @@ gallery.addEventListener('click', event => {
   const htmlItem = `<div class = "mobil-window">
             <img src="${event.target.dataset.source}">
     </div>`;
-  const instance = basicLightbox.create(htmlItem, {
-    onShow: instance => console.log('onShow', instance),
-    onClose: instance => console.log('onClose', instance),
-  });
-  instance.show(instance => console.log('finished show()', instance));
 
+  const instance = basicLightbox.create(htmlItem, {
+    onClose: instance => {
+      gallery.removeEventListener(`click`, event), console.log('CLOSE');
+    },
+  });
+  instance.show(instance => console.log(' SHOW'));
   document.addEventListener('keydown', event => {
     if (event.code === 'Escape') {
+      document.removeEventListener(`keydown`, event);
       instance.close();
+      console.log(`ESC`);
     }
   });
 });
