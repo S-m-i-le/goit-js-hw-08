@@ -65,10 +65,10 @@ const images = [
 ];
 
 const gallery = document.querySelector('.gallery');
-const elements = images
-  .map(
-    image =>
-      `<li class="gallery-item">
+const elements = images.reduce(
+  (htmlTotal, image) =>
+    htmlTotal +
+    `<li class="gallery-item">
   <a class="gallery-link" href="${image.original}">
     <img
       class="gallery-image"
@@ -78,22 +78,24 @@ const elements = images
     />
   </a>
 </li>`,
-  )
-  .join('');
-
+  '',
+);
 gallery.insertAdjacentHTML('afterbegin', elements);
 gallery.addEventListener('click', event => {
   event.preventDefault();
   if (event.target.nodeName !== 'IMG') return;
-  const mobilWindow = basicLightbox.create(
-    `<div class = "mobil-window">
+  const htmlItem = `<div class = "mobil-window">
             <img src="${event.target.dataset.source}">
-    </div>`,
-  );
-  mobilWindow.show();
+    </div>`;
+  const instance = basicLightbox.create(htmlItem, {
+    onShow: instance => console.log('onShow', instance),
+    onClose: instance => console.log('onClose', instance),
+  });
+  instance.show(instance => console.log('finished show()', instance));
+
   document.addEventListener('keydown', event => {
     if (event.code === 'Escape') {
-      mobilWindow.close();
+      instance.close();
     }
   });
 });
