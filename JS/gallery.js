@@ -81,7 +81,6 @@ const elements = images.reduce(
   '',
 );
 gallery.insertAdjacentHTML('afterbegin', elements);
-
 gallery.addEventListener('click', event => {
   event.preventDefault();
   if (event.target.nodeName !== 'IMG') return;
@@ -89,24 +88,14 @@ gallery.addEventListener('click', event => {
             <img src="${event.target.dataset.source}">
     </div>`;
   gallery.removeEventListener('click', event);
-
   const instance = basicLightbox.create(htmlItem, {
-    onShow: instance => {
-      gallery.addEventListener('click', event);
-      event.preventDefault();
-      console.log(`OPEN`);
-    },
-    onClose: instance => {
-      gallery.removeEventListener(`click`, event), console.log('CLOSE');
-      document.removeEventListener(`keydown`, event),
-        console.log('CLOSE ESC keydown');
-    },
+    onShow: instance => document.addEventListener('keydown', esc),
+    onClose: instance => document.removeEventListener(`keydown`, esc),
   });
-  instance.show(instance => console.log(' SHOW'));
-
-  document.addEventListener('keydown', event => {
+  instance.show();
+  function esc(event) {
     if (event.code === 'Escape') {
       instance.close();
     }
-  });
+  }
 });
