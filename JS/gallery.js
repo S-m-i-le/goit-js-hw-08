@@ -81,21 +81,45 @@ const elements = images.reduce(
   '',
 );
 gallery.insertAdjacentHTML('afterbegin', elements);
+
 gallery.addEventListener('click', event => {
   event.preventDefault();
   if (event.target.nodeName !== 'IMG') return;
-  const htmlItem = `<div class = "mobil-window">
+  const htmlItem = `<div class = "modal-window">
             <img src="${event.target.dataset.source}">
     </div>`;
-  gallery.removeEventListener('click', event);
+
   const instance = basicLightbox.create(htmlItem, {
     onShow: instance => document.addEventListener('keydown', esc),
-    onClose: instance => document.removeEventListener(`keydown`, esc),
+    onClose: instance => {
+      document.removeEventListener('keydown', esc);
+      gallery.removeEventListener('click', instance);
+    },
   });
   instance.show();
+
   function esc(event) {
     if (event.code === 'Escape') {
       instance.close();
     }
   }
 });
+
+// gallery.addEventListener('click', event => {
+//   event.preventDefault();
+//   if (event.target.nodeName !== 'IMG') return;
+//   const htmlItem = `<div class = "modal-window">
+//             <img src="${event.target.dataset.source}">
+//     </div>`;
+//   gallery.removeEventListener('click', event);
+//   const instance = basicLightbox.create(htmlItem, {
+//     onShow: instance => document.addEventListener('keydown', esc),
+//     onClose: instance => document.removeEventListener('keydown', esc),
+//   });
+//   instance.show();
+//   function esc(event) {
+//     if (event.code === 'Escape') {
+//       instance.close();
+//     }
+//   }
+// });
