@@ -65,10 +65,10 @@ const images = [
 ];
 
 const gallery = document.querySelector('.gallery');
-const elements = images.reduce(
-  (htmlTotal, image) =>
-    htmlTotal +
-    `<li class="gallery-item">
+const elements = images
+  .map(
+    image =>
+      `<li class="gallery-item">
   <a class="gallery-link" href="${image.original}">
     <img
       class="gallery-image"
@@ -78,8 +78,8 @@ const elements = images.reduce(
     />
   </a>
 </li>`,
-  '',
-);
+  )
+  .join('');
 gallery.insertAdjacentHTML('afterbegin', elements);
 
 gallery.addEventListener('click', event => {
@@ -93,7 +93,7 @@ gallery.addEventListener('click', event => {
     onShow: instance => document.addEventListener('keydown', esc),
     onClose: instance => {
       document.removeEventListener('keydown', esc);
-      gallery.removeEventListener('click', instance);
+      gallery.removeEventListener('click', event);
     },
   });
   instance.show();
@@ -104,22 +104,3 @@ gallery.addEventListener('click', event => {
     }
   }
 });
-
-// gallery.addEventListener('click', event => {
-//   event.preventDefault();
-//   if (event.target.nodeName !== 'IMG') return;
-//   const htmlItem = `<div class = "modal-window">
-//             <img src="${event.target.dataset.source}">
-//     </div>`;
-//   gallery.removeEventListener('click', event);
-//   const instance = basicLightbox.create(htmlItem, {
-//     onShow: instance => document.addEventListener('keydown', esc),
-//     onClose: instance => document.removeEventListener('keydown', esc),
-//   });
-//   instance.show();
-//   function esc(event) {
-//     if (event.code === 'Escape') {
-//       instance.close();
-//     }
-//   }
-// });
