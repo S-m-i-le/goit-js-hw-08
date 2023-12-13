@@ -85,22 +85,17 @@ gallery.insertAdjacentHTML('afterbegin', elements);
 gallery.addEventListener('click', event => {
   event.preventDefault();
   if (event.target.nodeName !== 'IMG') return;
-  const htmlItem = `<div class = "modal-window">
-            <img src="${event.target.dataset.source}">
-    </div>`;
+  const htmlItem = `<img src="${event.target.dataset.source}">`;
 
-  const instance = basicLightbox.create(htmlItem, {
-    onShow: instance => document.addEventListener('keydown', esc),
-    onClose: instance => {
-      document.removeEventListener('keydown', esc);
-      gallery.removeEventListener('click', event);
-    },
+  const modalWindow = basicLightbox.create(htmlItem, {
+    onShow: modalWindow => document.addEventListener('keydown', esc),
+    onClose: modalWindow => document.removeEventListener('keydown', esc),
   });
-  instance.show();
+  modalWindow.show();
 
   function esc(event) {
     if (event.code === 'Escape') {
-      instance.close();
+      modalWindow.close();
     }
   }
 });
